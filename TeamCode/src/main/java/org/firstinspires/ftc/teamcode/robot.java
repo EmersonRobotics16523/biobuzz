@@ -31,13 +31,12 @@
 //CHARGE CONTROL HUBS
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-public class robot2 {
+public class robot {
     public DcMotor leftFrontDrive = null;
     public DcMotor leftBackDrive = null;
     public DcMotor rightFrontDrive = null;
@@ -45,15 +44,11 @@ public class robot2 {
     public DcMotorEx launcherMotor1 = null;
     public DcMotorEx launcherMotor2 = null;
     public DcMotor intakeMotor = null;
-    //public DcMotor handlerMotor = null;
-    static final double MAX_DRIVE_SPEED = 0.5;
-
 
     //public GoBildaPinpointDriver odometer = null;
 
     public final double COUNTS_PER_MOTOR_REV = 537.7;
     public final double DRIVE_WHEEL_DIAMETER_CENTIMETERS = 10.4;
-    double strafeTick = (COUNTS_PER_MOTOR_REV / (Math.PI * DRIVE_WHEEL_DIAMETER_CENTIMETERS));
     public final double FIELD_TILE = 60.96; //square centimeters
     public final double DRIVE_GEAR_REDUCTION = 1.001;
     public final double DRIVE_COUNTS_PER_CENTIMETERS = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (DRIVE_WHEEL_DIAMETER_CENTIMETERS * Math.PI);
@@ -61,7 +56,7 @@ public class robot2 {
     public final double COUNTS_PER_CM = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (Math.PI * DRIVE_WHEEL_DIAMETER_MM / 10); // Convert from mm to cm
     public final double WHEEL_BASE_WIDTH_CM = 2 * DRIVE_WHEEL_DIAMETER_MM / 10; // Convert from mm to cm
-    public final double COUNTS_PER_DEGREE = (2.9*(COUNTS_PER_CM * Math.PI * WHEEL_BASE_WIDTH_CM / 360.0)); //test *3
+    public final double COUNTS_PER_DEGREE = (2.9 * (COUNTS_PER_CM * Math.PI * WHEEL_BASE_WIDTH_CM / 360.0)); //test *3
 
 
     public void init(HardwareMap hardwareMap) {
@@ -72,7 +67,6 @@ public class robot2 {
         launcherMotor1 = hardwareMap.get(DcMotorEx.class, "launcher_motor_1");
         launcherMotor2 = hardwareMap.get(DcMotorEx.class, "launcher_motor_2");
         intakeMotor = hardwareMap.get(DcMotorEx.class, "intake_Motor");
-        //handlerMotor = hardwareMap.get(DcMotorEx.class, "handlerMotor");
 
         /*odometer = hardwareMap.get(GoBildaPinpointDriver.class, "odometer");
         odometer.setOffsets(-84.0, -168.0, DistanceUnit.MM);
@@ -102,15 +96,15 @@ public class robot2 {
 //            currentPosition = odometer.getPosition();
 //        }
 //
-////        while (leftFrontDrive.isBusy() && leftBackDrive.isBusy() && rightFrontDrive.isBusy() && rightBackDrive.isBusy()) {
-////
-////        }
+
+    /// /        while (leftFrontDrive.isBusy() && leftBackDrive.isBusy() && rightFrontDrive.isBusy() && rightBackDrive.isBusy()) {
+    /// /
+    /// /        }
 //        leftFrontDrive.setPower(0);
 //        leftBackDrive.setPower(0);
 //        rightFrontDrive.setPower(0);
 //        rightBackDrive.setPower(0);
 //    }
-
     public void drive(double distance, double power) {
         int leftFrontTarget = leftFrontDrive.getCurrentPosition() + (int) (distance * DRIVE_COUNTS_PER_CENTIMETERS);
         int leftBackTarget = leftBackDrive.getCurrentPosition() + (int) (distance * DRIVE_COUNTS_PER_CENTIMETERS);
@@ -152,8 +146,6 @@ public class robot2 {
         drive(driveDistance, power);
 
     }
-
-
 
 
     public void driveBackward(double distance, double power) {
@@ -205,248 +197,99 @@ public class robot2 {
         rightBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);*/
 
     }
-    public void runIntake(double power, double seconds){
-        intakeMotor.setPower(power);
-    }
 
-    public void spinIntake(double seconds) {
-        timer.reset();
-        intakeMotor.setPower(Math.abs(1));
-        while (timer.seconds() < seconds) {
-            // wait for the specified duration
+
+        public void strafeRight (double distanceCm, double power){
+            double strafeRightDistance = (Math.abs(distanceCm));
+            strafe(strafeRightDistance, power);
         }
-        intakeMotor.setPower(0); // Stop the arm after the duration has passed
-    }
+
+        public void strafeLeft ( double distanceCm, double power){
+            double strafeLeftDistance = -(Math.abs(distanceCm));
+            strafe(strafeLeftDistance, power);
+        }
+
+        public void spinLeft (double distance, double power){
+            int leftFrontTarget = leftFrontDrive.getCurrentPosition() - (int) (distance * DRIVE_COUNTS_PER_CENTIMETERS);
+            int leftBackTarget = leftBackDrive.getCurrentPosition() - (int) (distance * DRIVE_COUNTS_PER_CENTIMETERS);
+            int rightFrontTarget = rightFrontDrive.getCurrentPosition() + (int) (distance * DRIVE_COUNTS_PER_CENTIMETERS);
+            int rightBackTarget = rightBackDrive.getCurrentPosition() + (int) (distance * DRIVE_COUNTS_PER_CENTIMETERS);
+
+            leftFrontDrive.setTargetPosition(leftFrontTarget);
+            leftBackDrive.setTargetPosition(leftBackTarget);
+            rightBackDrive.setTargetPosition(rightBackTarget);
+            rightFrontDrive.setTargetPosition(rightFrontTarget);
+
+            leftFrontDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            leftBackDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            rightFrontDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            rightBackDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            leftFrontDrive.setPower(Math.abs(power) * 0.5);
+            leftBackDrive.setPower(Math.abs(power) * 0.5);
+            rightFrontDrive.setPower(Math.abs(power) * 0.5);
+            rightBackDrive.setPower(Math.abs(power) * 0.5);
+
+            while (leftFrontDrive.isBusy() && leftBackDrive.isBusy() && rightFrontDrive.isBusy() && rightBackDrive.isBusy()) {
+
+            }
+            leftFrontDrive.setPower(0);
+            leftBackDrive.setPower(0);
+            rightFrontDrive.setPower(0);
+            rightBackDrive.setPower(0);
+
+            leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            leftBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            rightBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        }
+
+        public void spinRight ( double distance, double power){
+            int leftFrontTarget = leftFrontDrive.getCurrentPosition() + (int) (distance * DRIVE_COUNTS_PER_CENTIMETERS);
+            int leftBackTarget = leftBackDrive.getCurrentPosition() + (int) (distance * DRIVE_COUNTS_PER_CENTIMETERS);
+            int rightFrontTarget = rightFrontDrive.getCurrentPosition() - (int) (distance * DRIVE_COUNTS_PER_CENTIMETERS);
+            int rightBackTarget = rightBackDrive.getCurrentPosition() - (int) (distance * DRIVE_COUNTS_PER_CENTIMETERS);
+
+            leftFrontDrive.setTargetPosition(leftFrontTarget);
+            leftBackDrive.setTargetPosition(leftBackTarget);
+            rightBackDrive.setTargetPosition(rightBackTarget);
+            rightFrontDrive.setTargetPosition(rightFrontTarget);
+
+            leftFrontDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            leftBackDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            rightFrontDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            rightBackDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            leftFrontDrive.setPower(Math.abs(power) * 0.5);
+            leftBackDrive.setPower(Math.abs(power) * 0.5);
+            rightFrontDrive.setPower(Math.abs(power) * 0.5);
+            rightBackDrive.setPower(Math.abs(power) * 0.5);
+
+            while (leftFrontDrive.isBusy() && leftBackDrive.isBusy() && rightFrontDrive.isBusy() && rightBackDrive.isBusy()) {
+
+            }
+            leftFrontDrive.setPower(0);
+            leftBackDrive.setPower(0);
+            rightFrontDrive.setPower(0);
+            rightBackDrive.setPower(0);
+
+            leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            leftBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            rightBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        }
 
 
+        private ElapsedTime timer = new ElapsedTime();
 
-    //public void handler(double power, double seconds){
-        handlerMotor.setPower(power);
-}
-
-public void launcherrpm(double rpm, double secs) {
-    int  rpmmotor = (int) (rpm/60*28); //rpm to ticks per second 6000 rpm motor encoder vaue =28
-    launcherMotor1.setVelocity(rpmmotor);
-    launcherMotor2.setVelocity(rpmmotor);
-    while (launcherMotor1.getVelocity()<=rpmmotor && launcherMotor2.getVelocity()<=rpmmotor)
-    {
-
-
-    }
-    /*timer.reset();
-    handlerMotor.setPower(Math.abs(1));
-    while (timer.seconds() <= secs) {
-        // wait for the specified duration
-    }
-    handlerMotor.setPower(0); // Stop the arm after the duration has passed
-    launcherMotor1.setVelocity(0);
-    launcherMotor2.setVelocity(0);
-
-}
-*/
-
-
-public void strafeRight(double distanceCm, double power) {
-    double strafeRightDistance = (Math.abs(distanceCm));
-    strafe(strafeRightDistance, power);
-}
-
-public void strafeLeft(double distanceCm, double power) {
-    double strafeLeftDistance = -(Math.abs(distanceCm));
-    strafe(strafeLeftDistance, power);
-}
-
-public void spinLeftInDegrees(double degrees, double power) {
-    int leftFrontTarget = leftFrontDrive.getCurrentPosition() - (int) (degrees * COUNTS_PER_DEGREE);
-    int leftBackTarget = leftBackDrive.getCurrentPosition() - (int) (degrees * COUNTS_PER_DEGREE);
-    int rightFrontTarget = rightFrontDrive.getCurrentPosition() + (int) (degrees * COUNTS_PER_DEGREE);
-    int rightBackTarget = rightBackDrive.getCurrentPosition() + (int) (degrees * COUNTS_PER_DEGREE);
-
-    leftFrontDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    leftBackDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    rightFrontDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    rightBackDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-    leftFrontDrive.setTargetPosition(leftFrontTarget);
-    leftBackDrive.setTargetPosition(leftBackTarget);
-    rightBackDrive.setTargetPosition(rightBackTarget);
-    rightFrontDrive.setTargetPosition(rightFrontTarget);
-
-
-
-    leftFrontDrive.setPower(Math.abs(power) * 0.5);
-    leftBackDrive.setPower(Math.abs(power) * 0.5);
-    rightFrontDrive.setPower(Math.abs(power) * 0.5);
-    rightBackDrive.setPower(Math.abs(power) * 0.5);
-    while (leftFrontDrive.isBusy() && leftBackDrive.isBusy() && rightFrontDrive.isBusy() && rightBackDrive.isBusy()) {
-
-    }
-    leftFrontDrive.setPower(0);
-    leftBackDrive.setPower(0);
-    rightFrontDrive.setPower(0);
-    rightBackDrive.setPower(0);
-
-    leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-    leftBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-    rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-    rightBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-}
-public void spinRightInDegrees(double degrees, double power) {
-    int leftFrontTarget = leftFrontDrive.getCurrentPosition() + (int) (degrees * COUNTS_PER_DEGREE);
-    int leftBackTarget = leftBackDrive.getCurrentPosition() + (int) (degrees * COUNTS_PER_DEGREE);
-    int rightFrontTarget = rightFrontDrive.getCurrentPosition() - (int) (degrees * COUNTS_PER_DEGREE);
-    int rightBackTarget = rightBackDrive.getCurrentPosition() - (int) (degrees * COUNTS_PER_DEGREE);
-
-
-
-
-
-    leftFrontDrive.setTargetPosition(leftFrontTarget);
-    leftBackDrive.setTargetPosition(leftBackTarget);
-    rightBackDrive.setTargetPosition(rightBackTarget);
-    rightFrontDrive.setTargetPosition(rightFrontTarget);
-
-    leftFrontDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    leftBackDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    rightFrontDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    rightBackDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-
-
-    leftFrontDrive.setPower(Math.abs(power) );
-    leftBackDrive.setPower(Math.abs(power) );
-    rightFrontDrive.setPower(Math.abs(power) );
-    rightBackDrive.setPower(Math.abs(power) );
-
-    while (leftFrontDrive.isBusy() && leftBackDrive.isBusy() && rightFrontDrive.isBusy() && rightBackDrive.isBusy()) {
+        public void timeOut (double duration){//does nothing for specified duration
+            timer.reset();
+            while (timer.seconds() < duration) {
+            }
+        }
 
     }
-    leftFrontDrive.setPower(0);
-    leftBackDrive.setPower(0);
-    rightFrontDrive.setPower(0);
-    rightBackDrive.setPower(0);
 
-    leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-    leftBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-    rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-    rightBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-}
-public void spinInDegrees(double degrees, double power) {
-    int leftFrontTarget = leftFrontDrive.getCurrentPosition() + (int) (degrees * COUNTS_PER_DEGREE);
-    int leftBackTarget = leftBackDrive.getCurrentPosition() + (int) (degrees * COUNTS_PER_DEGREE);
-    int rightFrontTarget = rightFrontDrive.getCurrentPosition() - (int) (degrees * COUNTS_PER_DEGREE);
-    int rightBackTarget = rightBackDrive.getCurrentPosition() - (int) (degrees * COUNTS_PER_DEGREE);
-
-    leftFrontDrive.setTargetPosition(leftFrontTarget);
-    leftBackDrive.setTargetPosition(leftBackTarget);
-    rightBackDrive.setTargetPosition(rightBackTarget);
-    rightFrontDrive.setTargetPosition(rightFrontTarget);
-
-    leftFrontDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    leftBackDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    rightFrontDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    rightBackDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-    leftFrontDrive.setPower((power) * 0.5);
-    leftBackDrive.setPower((power) * 0.5);
-    rightFrontDrive.setPower((power) * 0.5);
-    rightBackDrive.setPower((power) * 0.5);
-
-    while (leftFrontDrive.isBusy() && leftBackDrive.isBusy() && rightFrontDrive.isBusy() && rightBackDrive.isBusy()) {
-
-    }
-    leftFrontDrive.setPower(0);
-    leftBackDrive.setPower(0);
-    rightFrontDrive.setPower(0);
-    rightBackDrive.setPower(0);
-
-    leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-    leftBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-    rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-    rightBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-}
-
-public void spinLeft(double distance, double power) {
-    int leftFrontTarget = leftFrontDrive.getCurrentPosition() - (int) (distance * DRIVE_COUNTS_PER_CENTIMETERS);
-    int leftBackTarget = leftBackDrive.getCurrentPosition() - (int) (distance * DRIVE_COUNTS_PER_CENTIMETERS);
-    int rightFrontTarget = rightFrontDrive.getCurrentPosition() + (int) (distance * DRIVE_COUNTS_PER_CENTIMETERS);
-    int rightBackTarget = rightBackDrive.getCurrentPosition() + (int) (distance * DRIVE_COUNTS_PER_CENTIMETERS);
-
-    leftFrontDrive.setTargetPosition(leftFrontTarget);
-    leftBackDrive.setTargetPosition(leftBackTarget);
-    rightBackDrive.setTargetPosition(rightBackTarget);
-    rightFrontDrive.setTargetPosition(rightFrontTarget);
-
-    leftFrontDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    leftBackDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    rightFrontDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    rightBackDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-    leftFrontDrive.setPower(Math.abs(power) * 0.5);
-    leftBackDrive.setPower(Math.abs(power) * 0.5);
-    rightFrontDrive.setPower(Math.abs(power) * 0.5);
-    rightBackDrive.setPower(Math.abs(power) * 0.5);
-
-    while (leftFrontDrive.isBusy() && leftBackDrive.isBusy() && rightFrontDrive.isBusy() && rightBackDrive.isBusy()) {
-
-    }
-    leftFrontDrive.setPower(0);
-    leftBackDrive.setPower(0);
-    rightFrontDrive.setPower(0);
-    rightBackDrive.setPower(0);
-
-    leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-    leftBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-    rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-    rightBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-}
-
-public void spinRight(double distance, double power) {
-    int leftFrontTarget = leftFrontDrive.getCurrentPosition() + (int) (distance * DRIVE_COUNTS_PER_CENTIMETERS);
-    int leftBackTarget = leftBackDrive.getCurrentPosition() + (int) (distance * DRIVE_COUNTS_PER_CENTIMETERS);
-    int rightFrontTarget = rightFrontDrive.getCurrentPosition() - (int) (distance * DRIVE_COUNTS_PER_CENTIMETERS);
-    int rightBackTarget = rightBackDrive.getCurrentPosition() - (int) (distance * DRIVE_COUNTS_PER_CENTIMETERS);
-
-    leftFrontDrive.setTargetPosition(leftFrontTarget);
-    leftBackDrive.setTargetPosition(leftBackTarget);
-    rightBackDrive.setTargetPosition(rightBackTarget);
-    rightFrontDrive.setTargetPosition(rightFrontTarget);
-
-    leftFrontDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    leftBackDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    rightFrontDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    rightBackDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-    leftFrontDrive.setPower(Math.abs(power) * 0.5);
-    leftBackDrive.setPower(Math.abs(power) * 0.5);
-    rightFrontDrive.setPower(Math.abs(power) * 0.5);
-    rightBackDrive.setPower(Math.abs(power) * 0.5);
-
-    while (leftFrontDrive.isBusy() && leftBackDrive.isBusy() && rightFrontDrive.isBusy() && rightBackDrive.isBusy()) {
-
-    }
-    leftFrontDrive.setPower(0);
-    leftBackDrive.setPower(0);
-    rightFrontDrive.setPower(0);
-    rightBackDrive.setPower(0);
-
-    leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-    leftBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-    rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-    rightBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-}
-
-
-private ElapsedTime timer = new ElapsedTime();
-
-public void timeOut(double duration) {//does nothing for specified duration
-    timer.reset();
-    while (timer.seconds() < duration) {
-    }
-}
-
-
-    }
 
 
 
