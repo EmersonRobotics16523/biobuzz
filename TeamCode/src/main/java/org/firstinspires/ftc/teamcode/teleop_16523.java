@@ -34,6 +34,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.ExposureControl;
@@ -41,6 +42,7 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.GainCon
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
+
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import java.util.List;
@@ -77,32 +79,16 @@ import java.util.concurrent.TimeUnit;
 // KEEP REV OPEN WHEN PUSHING
 
 
-@TeleOp( name = "16523_decode_BLUE v21", group = "Linear OpMode")
-@Disabled
+@TeleOp(name = "16523_bio_buzz 1", group = "Linear OpMode")
 public class teleop_16523 extends LinearOpMode {
-    private ElapsedTime runtime = new ElapsedTime();
-    private static final boolean USE_WEBCAM = true;  // Set true to use a webcam, or false for a phone camera
-    private static final int DESIRED_TAG_ID = 20;     // Choose the tag you want to approach or set to -1 for ANY tag.
-    private VisionPortal visionPortal;               // Used to manage the video source.
-    private AprilTagProcessor aprilTag;              // Used for managing the AprilTag detection process.
-    private AprilTagDetection desiredTag = null;     // Used to hold the data for a detected AprilTag
-
     robot robot = new robot();
 
     @Override
-
     public void runOpMode() {
         robot.init(hardwareMap);
-        boolean targetFound     = false;    // Set to true when an AprilTag target is detected
-        double ATD = 0;
-        double ATB = 0;
-        double ATY = 0;
-        double ATI = 0;
-        // Initialize the Apriltag Detection process
+        waitForStart();
 
         while (opModeIsActive()) {
-
-
             double max;
             // POV Mode uses left joystick to go forward & strafe, and right joystick to rotate.
             double axial = -gamepad1.left_stick_y;  // Note: pushing stick forward gives POSITIVE value
@@ -138,8 +124,7 @@ public class teleop_16523 extends LinearOpMode {
             robot.rightFrontDrive.setPower(rightFrontPower * 0.4);
             robot.rightBackDrive.setPower(rightBackPower * 0.4);
 
-            boolean Gamepad2a = gamepad2.a;
-            if (Gamepad2a) {
+           /* if (gamepad2.a) {
                 robot.launcherMotor1.setPower(0.57);
                 robot.launcherMotor2.setPower(0.57); //weak launcher power
             } else {
@@ -147,28 +132,21 @@ public class teleop_16523 extends LinearOpMode {
                 robot.launcherMotor2.setPower(0);
             }
 
-            boolean Gamepad2b = gamepad2.b;
-            if (Gamepad2b) {
+            if (gamepad2.b) {
                 robot.intakeMotor.setPower(1);
             } else {
                 robot.intakeMotor.setPower(0);
             }
 
-            boolean Gamepad2y = gamepad2.y;
-            ;
-            if (Gamepad2y) {
+            if (gamepad2.y) {
                 robot.launcherMotor1.setPower(0.67);
                 robot.launcherMotor2.setPower(0.67); //Strong launcher setting *sigh*
             } else {
                 robot.launcherMotor1.setPower(0);
                 robot.launcherMotor2.setPower(0);
-            }
-            boolean GamepadLB = gamepad2.left_bumper;
-                           }
-
-
-
+            }*/
         }
     }
+}
 
 
