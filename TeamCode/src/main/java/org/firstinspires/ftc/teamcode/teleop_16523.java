@@ -124,14 +124,14 @@ public class teleop_16523 extends LinearOpMode {
             robot.rightFrontDrive.setPower(rightFrontPower * 0.4);
             robot.rightBackDrive.setPower(rightBackPower * 0.4);
 
-           /* if (gamepad2.a) {
+            if (gamepad2.a) {
                 robot.launcherMotor1.setPower(0.57);
                 robot.launcherMotor2.setPower(0.57); //weak launcher power
             } else {
                 robot.launcherMotor1.setPower(0);
                 robot.launcherMotor2.setPower(0);
-            }
 
+/*
             if (gamepad2.b) {
                 robot.intakeMotor.setPower(1);
             } else {
@@ -144,7 +144,9 @@ public class teleop_16523 extends LinearOpMode {
             } else {
                 robot.launcherMotor1.setPower(0);
                 robot.launcherMotor2.setPower(0);
-            }*/
+
+ */
+            }
         }
     }
 }

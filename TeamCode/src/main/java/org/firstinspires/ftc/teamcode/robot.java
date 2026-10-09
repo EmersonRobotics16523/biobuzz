@@ -41,8 +41,8 @@ public class robot {
     public DcMotor leftBackDrive = null;
     public DcMotor rightFrontDrive = null;
     public DcMotor rightBackDrive = null;
-//    public DcMotorEx launcherMotor1 = null;
-//    public DcMotorEx launcherMotor2 = null;
+    public DcMotorEx launcherMotor1 = null;
+    public DcMotorEx launcherMotor2 = null;
 //    public DcMotor intakeMotor = null;
 
     //public GoBildaPinpointDriver odometer = null;
@@ -64,8 +64,8 @@ public class robot {
         leftBackDrive = hardwareMap.get(DcMotorEx.class, "left_back_drive");
         rightFrontDrive = hardwareMap.get(DcMotorEx.class, "right_front_drive");
         rightBackDrive = hardwareMap.get(DcMotorEx.class, "right_back_drive");
-//        launcherMotor1 = hardwareMap.get(DcMotorEx.class, "launcher_motor_1");
-//        launcherMotor2 = hardwareMap.get(DcMotorEx.class, "launcher_motor_2");
+        launcherMotor1 = hardwareMap.get(DcMotorEx.class, "launcher_motor_1");
+        launcherMotor2 = hardwareMap.get(DcMotorEx.class, "launcher_motor_2");
 //        intakeMotor = hardwareMap.get(DcMotorEx.class, "intake_Motor");
 
         /*odometer = hardwareMap.get(GoBildaPinpointDriver.class, "odometer");
@@ -78,8 +78,8 @@ public class robot {
         rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
         rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
 //        intakeMotor.setDirection(DcMotor.Direction.REVERSE);
-//        launcherMotor1.setDirection(DcMotor.Direction.FORWARD);
-//        launcherMotor2.setDirection(DcMotor.Direction.REVERSE);
+        launcherMotor1.setDirection(DcMotor.Direction.FORWARD);
+        launcherMotor2.setDirection(DcMotor.Direction.REVERSE);
         //handlerMotor.setDirection(CRServo.Direction.REVERSE);
     }
 //    public void runToOd
