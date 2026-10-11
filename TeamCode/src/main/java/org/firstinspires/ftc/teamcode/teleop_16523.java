@@ -131,7 +131,6 @@ public class teleop_16523 extends LinearOpMode {
                 robot.launcherMotor1.setPower(0);
                 robot.launcherMotor2.setPower(0);
 
-
 /*
             if (gamepad2.b) {
                 robot.intakeMotor.setPower(1);
@@ -147,9 +146,6 @@ public class teleop_16523 extends LinearOpMode {
                 robot.launcherMotor2.setPower(0);
 
  */
-            }
-            if (gamepad2.x) {
-                robot.launcher();
             }
         }
     }
