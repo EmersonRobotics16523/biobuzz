@@ -35,6 +35,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 
 public class robot {
     public DcMotor leftFrontDrive = null;
@@ -44,6 +45,7 @@ public class robot {
     public DcMotorEx launcherMotor1 = null;
     public DcMotorEx launcherMotor2 = null;
 //    public DcMotor intakeMotor = null;
+    public ColorSensor launcherSensor = null;
 
     //public GoBildaPinpointDriver odometer = null;
 
@@ -66,6 +68,7 @@ public class robot {
         rightBackDrive = hardwareMap.get(DcMotorEx.class, "right_back_drive");
         launcherMotor1 = hardwareMap.get(DcMotorEx.class, "launcher_motor_1");
         launcherMotor2 = hardwareMap.get(DcMotorEx.class, "launcher_motor_2");
+        launcherSensor = hardwareMap.get(ColorSensor.class, "launcher_sensor");
 //        intakeMotor = hardwareMap.get(DcMotorEx.class, "intake_Motor");
 
         /*odometer = hardwareMap.get(GoBildaPinpointDriver.class, "odometer");
@@ -147,6 +150,22 @@ public class robot {
 
     }
 
+    public void launcherrpm(double rpm) {
+        int rpmmotor = (int) (rpm / 60 * 28); //rpm to ticks per second 6000 rpm motor encoder vaue =28
+        launcherMotor1.setVelocity(rpmmotor);
+        launcherMotor2.setVelocity(rpmmotor);
+        while (launcherMotor1.getVelocity() <= rpmmotor && launcherMotor2.getVelocity() <= rpmmotor) {
+
+
+        }
+    }
+
+    public void launcher() {
+        if (launcherSensor.blue() > launcherSensor.red() && launcherSensor.blue() > launcherSensor.green()) {
+launcherrpm(60);
+
+        }
+    }
 
     public void driveBackward(double distance, double power) {
         double driveDistance = -(Math.abs(distance)); //seems redundant but does make sense, fixes user error
