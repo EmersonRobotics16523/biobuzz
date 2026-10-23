@@ -165,6 +165,13 @@ public class robot {
 launcherrpm(60);
 
         }
+        else if (launcherSensor.red() > launcherSensor.blue() && launcherSensor.red() > launcherSensor.green()) {
+            launcherrpm(600);
+
+        }
+        else if (launcherSensor.alpha() > 20) {
+launcherrpm(1200);
+        }
     }
 
     public void driveBackward(double distance, double power) {

@@ -79,7 +79,7 @@ import java.util.concurrent.TimeUnit;
 // KEEP REV OPEN WHEN PUSHING
 
 
-@TeleOp(name = "16523_bio_buzz 1", group = "Linear OpMode")
+@TeleOp(name = "16523_bio_buzz v4", group = "Linear OpMode")
 public class teleop_16523 extends LinearOpMode {
     robot robot = new robot();
 
