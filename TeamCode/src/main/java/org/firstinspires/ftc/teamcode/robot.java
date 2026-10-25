@@ -169,7 +169,7 @@ launcherrpm(60);
             launcherrpm(600);
 
         }
-        else if (launcherSensor.alpha() > 20) {
+        else if (launcherSensor.red() > 200 && launcherSensor.green() > 200) {
 launcherrpm(1200);
         }
     }

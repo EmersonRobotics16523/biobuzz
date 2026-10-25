@@ -33,6 +33,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
@@ -79,7 +80,7 @@ import java.util.concurrent.TimeUnit;
 // KEEP REV OPEN WHEN PUSHING
 
 
-@TeleOp(name = "16523_bio_buzz v4", group = "Linear OpMode")
+@TeleOp(name = "16523_bio_buzz v12", group = "Linear OpMode")
 public class teleop_16523 extends LinearOpMode {
     robot robot = new robot();
 
@@ -87,8 +88,9 @@ public class teleop_16523 extends LinearOpMode {
     public void runOpMode() {
         robot.init(hardwareMap);
         waitForStart();
-
         while (opModeIsActive()) {
+
+
             double max;
             // POV Mode uses left joystick to go forward & strafe, and right joystick to rotate.
             double axial = -gamepad1.left_stick_y;  // Note: pushing stick forward gives POSITIVE value
@@ -149,7 +151,19 @@ public class teleop_16523 extends LinearOpMode {
  */
             }
             if (gamepad2.x) {
-                robot.launcher();
+                telemetry.addData("red", robot.launcherSensor.red());
+                telemetry.addData("blue", robot.launcherSensor.blue());
+                telemetry.addData("green", robot.launcherSensor.green());
+                //robot.launcher();
+                //blue ball launcher
+                if (robot.launcherSensor.red() > 20 && robot.launcherSensor.red() < 800 && robot.launcherSensor.blue() > 1000 && robot.launcherSensor.green() > 300 && robot.launcherSensor.green() < 2000) {
+                    telemetry.addData("blue ball", "ball is probably blue");
+                }
+                if (robot.launcherSensor.red() > 3500 && robot.launcherSensor.blue() > 1300 && robot.launcherSensor.blue() < 1800 && robot.launcherSensor.green() > 2000 && robot.launcherSensor.green() < 2600) {
+telemetry.addData("red ball", "ts gotta be red");
+                }
+                telemetry.update();
+
             }
         }
     }
