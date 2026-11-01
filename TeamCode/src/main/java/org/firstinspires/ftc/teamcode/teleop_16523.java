@@ -80,7 +80,7 @@ import java.util.concurrent.TimeUnit;
 // KEEP REV OPEN WHEN PUSHING
 
 
-@TeleOp(name = "16523_bio_buzz v12", group = "Linear OpMode")
+@TeleOp(name = "16523_bio_buzz v16.4", group = "Linear OpMode")
 public class teleop_16523 extends LinearOpMode {
     robot robot = new robot();
 
@@ -159,8 +159,15 @@ public class teleop_16523 extends LinearOpMode {
                 if (robot.launcherSensor.red() > 20 && robot.launcherSensor.red() < 800 && robot.launcherSensor.blue() > 1000 && robot.launcherSensor.green() > 300 && robot.launcherSensor.green() < 2000) {
                     telemetry.addData("blue ball", "ball is probably blue");
                 }
-                if (robot.launcherSensor.red() > 3500 && robot.launcherSensor.blue() > 1300 && robot.launcherSensor.blue() < 1800 && robot.launcherSensor.green() > 2000 && robot.launcherSensor.green() < 2600) {
-telemetry.addData("red ball", "ts gotta be red");
+                if (robot.launcherSensor.red() > 1100 && robot.launcherSensor.blue() > 800 && robot.launcherSensor.blue() < 1600 && robot.launcherSensor.green() > 900 && robot.launcherSensor.green() < 2500) {
+telemetry.addData("red ball", "probably red");
+                }
+                if (robot.launcherSensor.red() > 925 && robot.launcherSensor.red() < 4000 && robot.launcherSensor.blue() > 400 && robot.launcherSensor.blue() < 3800 && robot.launcherSensor.green() > 1750) {
+                    telemetry.addData("yellow ball", "probably yellow");
+
+                }
+                if (robot.launcherSensor.red() < 600 && robot.launcherSensor.blue() < 600 && robot.launcherSensor.green() < 600) {
+                    telemetry.addData("black", "probably black");
                 }
                 telemetry.update();
 
