@@ -80,7 +80,7 @@ import java.util.concurrent.TimeUnit;
 // KEEP REV OPEN WHEN PUSHING
 
 
-@TeleOp(name = "16523_bio_buzz v16.4", group = "Linear OpMode")
+@TeleOp(name = "16523_bio_buzz v22.2", group = "Linear OpMode")
 public class teleop_16523 extends LinearOpMode {
     robot robot = new robot();
 
@@ -89,7 +89,6 @@ public class teleop_16523 extends LinearOpMode {
         robot.init(hardwareMap);
         waitForStart();
         while (opModeIsActive()) {
-
 
             double max;
             // POV Mode uses left joystick to go forward & strafe, and right joystick to rotate.
@@ -126,19 +125,11 @@ public class teleop_16523 extends LinearOpMode {
             robot.rightFrontDrive.setPower(rightFrontPower * 0.4);
             robot.rightBackDrive.setPower(rightBackPower * 0.4);
 
-            if (gamepad2.a) {
-                robot.launcherMotor1.setPower(0.57);
-                robot.launcherMotor2.setPower(0.57); //weak launcher power
-            } else {
-                robot.launcherMotor1.setPower(0);
-                robot.launcherMotor2.setPower(0);
-
-
-/*
-            if (gamepad2.b) {
-                robot.intakeMotor.setPower(1);
-            } else {
-                robot.intakeMotor.setPower(0);
+            if(gamepad2.dpad_up) {
+                robot.flower(true);
+            }
+            else {
+                robot.flower(false);
             }
 
             if (gamepad2.y) {
@@ -147,33 +138,37 @@ public class teleop_16523 extends LinearOpMode {
             } else {
                 robot.launcherMotor1.setPower(0);
                 robot.launcherMotor2.setPower(0);
-
- */
             }
-            if (gamepad2.x) {
+            if (gamepad2.left_bumper) {
+                robot.intakeMotor.setPower(1);
+            }
+            else {
+                robot.intakeMotor.setPower(0);
+            }
+
+            if (gamepad2.right_bumper) {
                 telemetry.addData("red", robot.launcherSensor.red());
                 telemetry.addData("blue", robot.launcherSensor.blue());
                 telemetry.addData("green", robot.launcherSensor.green());
+                telemetry.update();
                 //robot.launcher();
                 //blue ball launcher
-                if (robot.launcherSensor.red() > 20 && robot.launcherSensor.red() < 800 && robot.launcherSensor.blue() > 1000 && robot.launcherSensor.green() > 300 && robot.launcherSensor.green() < 2000) {
-                    telemetry.addData("blue ball", "ball is probably blue");
+                robot.colorSensor();
+                if (robot.color == 1) {
+                    telemetry.addData("ball is blue", "");
                 }
-                if (robot.launcherSensor.red() > 1100 && robot.launcherSensor.blue() > 800 && robot.launcherSensor.blue() < 1600 && robot.launcherSensor.green() > 900 && robot.launcherSensor.green() < 2500) {
-telemetry.addData("red ball", "probably red");
+                else if (robot.color == 2) {
+                    telemetry.addData("ball is red", "");
                 }
-                if (robot.launcherSensor.red() > 925 && robot.launcherSensor.red() < 4000 && robot.launcherSensor.blue() > 400 && robot.launcherSensor.blue() < 3800 && robot.launcherSensor.green() > 1750) {
-                    telemetry.addData("yellow ball", "probably yellow");
-
+                else if (robot.color == 3) {
+                    telemetry.addData("ball is yellow", "");
                 }
-                if (robot.launcherSensor.red() < 600 && robot.launcherSensor.blue() < 600 && robot.launcherSensor.green() < 600) {
-                    telemetry.addData("black", "probably black");
+                else if (robot.color == 0) {
+                    telemetry.addData("no ball", "");
                 }
-                telemetry.update();
-
             }
+            robot.handlerMotor.setPower(gamepad2.left_trigger);
         }
     }
 }
-
 

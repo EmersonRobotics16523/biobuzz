@@ -34,6 +34,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 
@@ -44,7 +45,9 @@ public class robot {
     public DcMotor rightBackDrive = null;
     public DcMotorEx launcherMotor1 = null;
     public DcMotorEx launcherMotor2 = null;
-//    public DcMotor intakeMotor = null;
+    public DcMotorEx handlerMotor = null;
+    public DcMotor intakeMotor = null;
+    public Servo flowerServo = null;
     public ColorSensor launcherSensor = null;
 
     //public GoBildaPinpointDriver odometer = null;
@@ -69,7 +72,9 @@ public class robot {
         launcherMotor1 = hardwareMap.get(DcMotorEx.class, "launcher_motor_1");
         launcherMotor2 = hardwareMap.get(DcMotorEx.class, "launcher_motor_2");
         launcherSensor = hardwareMap.get(ColorSensor.class, "launcher_sensor");
-//        intakeMotor = hardwareMap.get(DcMotorEx.class, "intake_Motor");
+        handlerMotor = hardwareMap.get(DcMotorEx.class, "handler_motor");
+        intakeMotor = hardwareMap.get(DcMotorEx.class, "intake_motor");
+        flowerServo = hardwareMap.get(Servo.class, "flower_servo");
 
         /*odometer = hardwareMap.get(GoBildaPinpointDriver.class, "odometer");
         odometer.setOffsets(-84.0, -168.0, DistanceUnit.MM);
@@ -151,12 +156,21 @@ public class robot {
     }
 
     public void launcherrpm(double rpm) {
-        int rpmmotor = (int) (rpm / 60 * 28); //rpm to ticks per second 6000 rpm motor encoder vaue =28
+        int rpmmotor = (int) (rpm / 60 * 28); //rpm to ticks per second 6000 rpm motor encoder value =28
         launcherMotor1.setVelocity(rpmmotor);
         launcherMotor2.setVelocity(rpmmotor);
         while (launcherMotor1.getVelocity() <= rpmmotor && launcherMotor2.getVelocity() <= rpmmotor) {
+//ppr * 4 = tpr
 
+        }
+    }
 
+    public void flower(boolean down) {
+        if (down == true) {
+            flowerServo.setPosition(.5);
+        }
+        else {
+            flowerServo.setPosition(0);
         }
     }
 
@@ -304,7 +318,25 @@ launcherrpm(1200);
             rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             rightBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
-
+        double color = 0;
+        public void colorSensor (){
+            if (launcherSensor.red() > 20 && launcherSensor.red() < 800 && launcherSensor.blue() > 1000 && launcherSensor.green() > 300 && launcherSensor.green() < 2000) {
+                color = 1;
+                //blue
+            }
+            if (launcherSensor.red() > 1100 && launcherSensor.blue() > 800 && launcherSensor.blue() < 1600 && launcherSensor.green() > 900 && launcherSensor.green() < 2500) {
+                color = 2;
+                //red
+            }
+            if (launcherSensor.red() > 925 && launcherSensor.red() < 4000 && launcherSensor.blue() > 400 && launcherSensor.blue() < 3800 && launcherSensor.green() > 1750) {
+                color = 3;
+                //yellow
+            }
+            if (launcherSensor.red() < 600 && launcherSensor.blue() < 600 && launcherSensor.green() < 600) {
+                color = 0;
+                //black
+            }
+        }
 
         private ElapsedTime timer = new ElapsedTime();
 
