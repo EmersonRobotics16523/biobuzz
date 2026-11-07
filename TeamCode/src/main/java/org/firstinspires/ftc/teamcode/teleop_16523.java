@@ -80,7 +80,7 @@ import java.util.concurrent.TimeUnit;
 // KEEP REV OPEN WHEN PUSHING
 
 
-@TeleOp(name = "16523_bio_buzz v22.2", group = "Linear OpMode")
+@TeleOp(name = "16523_bio_buzz v28", group = "Linear OpMode")
 public class teleop_16523 extends LinearOpMode {
     robot robot = new robot();
 
@@ -133,6 +133,7 @@ public class teleop_16523 extends LinearOpMode {
             }
 
             if (gamepad2.y) {
+//                robot.launcherrpm(2000);
                 robot.launcherMotor1.setPower(0.67);
                 robot.launcherMotor2.setPower(0.67); //Strong launcher setting *sigh*
             } else {
@@ -142,11 +143,14 @@ public class teleop_16523 extends LinearOpMode {
             if (gamepad2.left_bumper) {
                 robot.intakeMotor.setPower(1);
             }
+            else if (gamepad2.left_trigger > .5) {
+                robot.intakeMotor.setPower(-1);
+            }
             else {
                 robot.intakeMotor.setPower(0);
             }
 
-            if (gamepad2.right_bumper) {
+            if (gamepad2.a) {
                 telemetry.addData("red", robot.launcherSensor.red());
                 telemetry.addData("blue", robot.launcherSensor.blue());
                 telemetry.addData("green", robot.launcherSensor.green());
@@ -167,7 +171,15 @@ public class teleop_16523 extends LinearOpMode {
                     telemetry.addData("no ball", "");
                 }
             }
-            robot.handlerMotor.setPower(gamepad2.left_trigger);
+            if (gamepad2.right_bumper) {
+                robot.handlerMotor.setPower(1);
+            }
+            else if (gamepad2.right_trigger > .5) {
+                robot.handlerMotor.setPower(-1);
+            }
+            else {
+                robot.handlerMotor.setPower(0);
+            }
         }
     }
 }

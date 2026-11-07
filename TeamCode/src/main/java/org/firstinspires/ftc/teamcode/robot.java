@@ -52,7 +52,7 @@ public class robot {
 
     //public GoBildaPinpointDriver odometer = null;
 
-    public final double COUNTS_PER_MOTOR_REV = 537.7;
+    public final double COUNTS_PER_MOTOR_REV = 537.1;
     public final double DRIVE_WHEEL_DIAMETER_CENTIMETERS = 10.4;
     public final double FIELD_TILE = 60.96; //square centimeters
     public final double DRIVE_GEAR_REDUCTION = 1.001;
