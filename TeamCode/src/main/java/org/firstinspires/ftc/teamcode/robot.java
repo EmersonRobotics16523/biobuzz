@@ -48,7 +48,7 @@ public class robot {
     public DcMotorEx handlerMotor = null;
     public DcMotor intakeMotor = null;
     public Servo flowerServo = null;
-    public ColorSensor launcherSensor = null;
+//    public ColorSensor launcherSensor = null;
 
     //public GoBildaPinpointDriver odometer = null;
 
@@ -71,7 +71,7 @@ public class robot {
         rightBackDrive = hardwareMap.get(DcMotorEx.class, "right_back_drive");
         launcherMotor1 = hardwareMap.get(DcMotorEx.class, "launcher_motor_1");
         launcherMotor2 = hardwareMap.get(DcMotorEx.class, "launcher_motor_2");
-        launcherSensor = hardwareMap.get(ColorSensor.class, "launcher_sensor");
+//        launcherSensor = hardwareMap.get(ColorSensor.class, "launcher_sensor");
         handlerMotor = hardwareMap.get(DcMotorEx.class, "handler_motor");
         intakeMotor = hardwareMap.get(DcMotorEx.class, "intake_motor");
         flowerServo = hardwareMap.get(Servo.class, "flower_servo");
@@ -85,10 +85,10 @@ public class robot {
         leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
         rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
         rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
-//        intakeMotor.setDirection(DcMotor.Direction.REVERSE);
-        launcherMotor1.setDirection(DcMotor.Direction.FORWARD);
-        launcherMotor2.setDirection(DcMotor.Direction.REVERSE);
-        //handlerMotor.setDirection(CRServo.Direction.REVERSE);
+        intakeMotor.setDirection(DcMotor.Direction.REVERSE);
+        launcherMotor1.setDirection(DcMotor.Direction.REVERSE);
+        launcherMotor2.setDirection(DcMotor.Direction.FORWARD);
+        handlerMotor.setDirection(DcMotorEx.Direction.REVERSE);
     }
 //    public void runToOd
 //    ometerPosition(Pose2D targetPosition, double power) {
@@ -173,7 +173,7 @@ public class robot {
             flowerServo.setPosition(0);
         }
     }
-
+/*
     public void launcher() {
         if (launcherSensor.blue() > launcherSensor.red() && launcherSensor.blue() > launcherSensor.green()) {
 launcherrpm(60);
@@ -187,7 +187,7 @@ launcherrpm(60);
 launcherrpm(1200);
         }
     }
-
+*/
     public void driveBackward(double distance, double power) {
         double driveDistance = -(Math.abs(distance)); //seems redundant but does make sense, fixes user error
         drive(driveDistance, power);
@@ -318,6 +318,7 @@ launcherrpm(1200);
             rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             rightBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
+        /*
         double color = 0;
         public void colorSensor (){
             if (launcherSensor.red() > 20 && launcherSensor.red() < 800 && launcherSensor.blue() > 1000 && launcherSensor.green() > 300 && launcherSensor.green() < 2000) {
@@ -337,7 +338,7 @@ launcherrpm(1200);
                 //black
             }
         }
-
+*/
         private ElapsedTime timer = new ElapsedTime();
 
         public void timeOut (double duration){//does nothing for specified duration
