@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-@Autonomous(name = "launch_auto v2.1")
+@Autonomous(name = "launch_auto v2.3")
 
 public class launch_auto extends LinearOpMode{
     @Override
@@ -12,14 +12,16 @@ public class launch_auto extends LinearOpMode{
         waitForStart();
         if(opModeIsActive()) {
             robot.init ( hardwareMap);
-            robot.handlerMotor.setPower(1);
-            robot.launcherMotor1.setPower(1);
-            robot.launcherMotor2.setPower(1);
+            robot.driveForward(5, .5);
+            robot.launcherMotor1.setPower(.9);
+            robot.launcherMotor2.setPower(.9);
+            sleep(2500);
+            robot.handlerMotor.setPower(.5);
             sleep(5000);
             robot.handlerMotor.setPower(0);
             robot.launcherMotor1.setPower(0);
             robot.launcherMotor2.setPower(0);
-            robot.driveForward(100, 1);
+            robot.driveForward(10, 1);
         }
     }
 }

@@ -134,8 +134,8 @@ public class teleop_16523 extends LinearOpMode {
 
             if (gamepad2.y) {
 //                robot.launcherrpm(2000);
-                robot.launcherMotor1.setPower(1);
-                robot.launcherMotor2.setPower(1); //Strong launcher setting *sigh*
+                robot.launcherMotor1.setPower(.95);
+                robot.launcherMotor2.setPower(.95); //Strong launcher setting *sigh*
             } else {
                 robot.launcherMotor1.setPower(0);
                 robot.launcherMotor2.setPower(0);

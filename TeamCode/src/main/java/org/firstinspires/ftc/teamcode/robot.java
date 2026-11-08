@@ -199,6 +199,8 @@ launcherrpm(1200);
         int rightFrontTarget = rightFrontDrive.getCurrentPosition() - (int) (distance * DRIVE_COUNTS_PER_CENTIMETERS);
         int rightBackTarget = rightBackDrive.getCurrentPosition() + (int) (distance * DRIVE_COUNTS_PER_CENTIMETERS);
 
+
+
         leftFrontDrive.setTargetPosition(leftFrontTarget);
         leftBackDrive.setTargetPosition(leftBackTarget);
         rightBackDrive.setTargetPosition(rightBackTarget);
@@ -238,6 +240,13 @@ launcherrpm(1200);
 
     }
 
+    public void launcher(double power, double time) {
+        launcherMotor1.setPower(power);
+        launcherMotor2.setPower(power);
+        while (timer.seconds() < time) {}
+        launcherMotor1.setPower(0);
+        launcherMotor2.setPower(0);
+    }
 
         public void strafeRight (double distanceCm, double power){
             double strafeRightDistance = (Math.abs(distanceCm));
